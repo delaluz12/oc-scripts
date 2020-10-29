@@ -5,7 +5,7 @@ import { Product } from 'ordercloud-javascript-sdk';
 async function runTestStandardProductsSupplier() {
     const creds = config.test.SEB.StandardProductsSupplier;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Staging');
-    const patch = { xp: { Facets: { supplier: 'Standard Products'} } };
+    const patch = { xp: { Facets: { supplier: ['Standard Products']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
@@ -37,7 +37,7 @@ async function runTestStandardProductsSupplier() {
 async function runPowerSystems() {
     const creds = config.prod.SEB.PowerSystems;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const patch = { xp: { Facets: { supplier: 'Power Systems'} } };
+    const patch = { xp: { Facets: { supplier: ['Power Systems']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
@@ -69,7 +69,7 @@ async function runPowerSystems() {
 async function runImpactCanopyUSA() {
     const creds = config.prod.SEB.ImpactCanopyUSA;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const patch = { xp: { Facets: { supplier: "Impact Canopy USA"} } };
+    const patch = { xp: { Facets: { supplier: ['Impact Canopy USA']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
@@ -101,7 +101,7 @@ async function runImpactCanopyUSA() {
 async function runImpactCanopyCanada() {
     const creds = config.prod.SEB.ImpactCanopyCanada;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const patch = { xp: { Facets: { supplier: "Impact Canopy Canada"} } };
+    const patch = { xp: { Facets: { supplier: ['Impact Canopy Canada']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
