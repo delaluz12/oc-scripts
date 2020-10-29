@@ -131,3 +131,5 @@ async function runImpactCanopyCanada() {
 }
 
 // invoke the proper function here, then debug in the debug panel
+// TODO: Make sure that you add 'ProductAdmin' to the roles array in the helpers.ocClient function
+// in order to avoid authentication errors.  Suppliers do not have full access.
