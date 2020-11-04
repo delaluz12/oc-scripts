@@ -4,7 +4,7 @@ import { Product } from 'ordercloud-javascript-sdk';
 
 async function runTorqueFitness() {
     const creds = config.prod.SEB.TorqueFitness;
-    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Staging');
     const patch = { ShipFromAddressID: '036-01' };
 
     console.log("getting products...")
