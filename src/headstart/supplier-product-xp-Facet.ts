@@ -2,10 +2,10 @@ import config from '../../integration-users.config';
 import * as helpers from '../../helpers';
 import { Product } from 'ordercloud-javascript-sdk';
 
-async function runTestCADSupplier() {
-    const creds = config.test.SEB.CADSupplier;
+async function runTestStandardProductsSupplier() {
+    const creds = config.test.SEB.StandardProductsSupplier;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Staging');
-    const patch = { xp: { Currency: 'CAD' } };
+    const patch = { xp: { Facets: { supplier: ['Standard Products']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
@@ -34,10 +34,10 @@ async function runTestCADSupplier() {
     console.log("done")
 }
 
-async function runTorqueFitness() {
-    const creds = config.prod.SEB.TorqueFitness;
+async function runPowerSystems() {
+    const creds = config.prod.SEB.PowerSystems;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const patch = { xp: { Currency: 'USD' } };
+    const patch = { xp: { Facets: { supplier: ['Power Systems']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
@@ -66,10 +66,10 @@ async function runTorqueFitness() {
     console.log("done")
 }
 
-async function runImpactCanopy() {
-    const creds = config.prod.SEB.ImpactCanopy;
+async function runImpactCanopyUSA() {
+    const creds = config.prod.SEB.ImpactCanopyUSA;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const patch = { xp: { Currency: 'USD' } };
+    const patch = { xp: { Facets: { supplier: ['Impact Canopy USA']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
@@ -101,7 +101,103 @@ async function runImpactCanopy() {
 async function runImpactCanopyCanada() {
     const creds = config.prod.SEB.ImpactCanopyCanada;
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const patch = { xp: { Currency: 'CAD' } };
+    const patch = { xp: { Facets: { supplier: ['Impact Canopy Canada']} } };
+
+    console.log("getting products...")
+    const products = await helpers.listAll<Product>(sdk.Products.List);
+    console.log("Got all products")
+
+    const total = products.length;
+    let progress = 0;
+    const errors = {};
+
+    console.log(`Patching ${total} products.`)
+
+    await helpers.batchOperations(products, async function singleOperation(
+        product: Product
+    ): Promise<any> {
+        try {
+            await sdk.Products.Patch(product.ID!, patch);
+            console.log(`Patched ${progress} out of ${total}`);
+            progress++;
+        } catch (e) {
+            console.log("error")
+            errors[product.ID!] = e;
+        }
+    })
+    await helpers.log(errors)
+    helpers.log(errors, 'SEB-patch-errors');
+    console.log("done")
+}
+
+async function runLifeFitness() {
+    const creds = config.prod.SEB.LifeFitness;
+    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const patch = { xp: { Facets: { supplier: ['Life Fitness']} } };
+
+    console.log("getting products...")
+    const products = await helpers.listAll<Product>(sdk.Products.List);
+    console.log("Got all products")
+
+    const total = products.length;
+    let progress = 0;
+    const errors = {};
+
+    console.log(`Patching ${total} products.`)
+
+    await helpers.batchOperations(products, async function singleOperation(
+        product: Product
+    ): Promise<any> {
+        try {
+            await sdk.Products.Patch(product.ID!, patch);
+            console.log(`Patched ${progress} out of ${total}`);
+            progress++;
+        } catch (e) {
+            console.log("error")
+            errors[product.ID!] = e;
+        }
+    })
+    await helpers.log(errors)
+    helpers.log(errors, 'SEB-patch-errors');
+    console.log("done")
+}
+
+async function runTorqueFitness() {
+    const creds = config.prod.SEB.TorqueFitness;
+    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const patch = { xp: { Facets: { supplier: ['Torque Fitness']} } };
+
+    console.log("getting products...")
+    const products = await helpers.listAll<Product>(sdk.Products.List);
+    console.log("Got all products")
+
+    const total = products.length;
+    let progress = 0;
+    const errors = {};
+
+    console.log(`Patching ${total} products.`)
+
+    await helpers.batchOperations(products, async function singleOperation(
+        product: Product
+    ): Promise<any> {
+        try {
+            await sdk.Products.Patch(product.ID!, patch);
+            console.log(`Patched ${progress} out of ${total}`);
+            progress++;
+        } catch (e) {
+            console.log("error")
+            errors[product.ID!] = e;
+        }
+    })
+    await helpers.log(errors)
+    helpers.log(errors, 'SEB-patch-errors');
+    console.log("done")
+}
+
+async function runPrecor() {
+    const creds = config.prod.SEB.Precor;
+    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const patch = { xp: { Facets: { supplier: ['Precor']} } };
 
     console.log("getting products...")
     const products = await helpers.listAll<Product>(sdk.Products.List);
