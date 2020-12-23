@@ -24,11 +24,12 @@ async function run() {
                 .filter(variant => variant.xp === null)
                 .map(variant => {
                     fixedProductIDs.push(product.ID)
-                    variant.xp = {
-                        SpecCombo: variant.Specs.map(s => s.OptionID).join('-'),
-                        SpecValues: variant.Specs.map(s => ({ SpecName: s.Name, SpecOptionValue: s.Value, PriceMarkup: s.PriceMarkup }))
-                    };
-                    return sdk.Products.SaveVariant(product.ID, variant.ID, variant)
+                    return sdk.Products.PatchVariant(product.ID, variant.ID, {
+                        xp: {
+                            SpecCombo: variant.Specs.map(s => s.OptionID).join('-'),
+                            SpecValues: variant.Specs.map(s => ({ SpecName: s.Name, SpecOptionValue: s.Value, PriceMarkup: s.PriceMarkup }))
+                        }
+                    })
                 })
             await Promise.all(requests);
             console.log(`${progress} of ${total} progress`);
