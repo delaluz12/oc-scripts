@@ -1,6 +1,6 @@
 import config from '../../integration-users.config';
 import * as helpers from '../../helpers';
-import { Product, User, Variant } from 'ordercloud-javascript-sdk';
+import { Variant } from 'ordercloud-javascript-sdk';
 
 //  For any products that have Variant.InventoryLevelTracking enabled
 //  But Inventory is set to null, set Inventory to 0
