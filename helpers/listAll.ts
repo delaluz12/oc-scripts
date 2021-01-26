@@ -30,7 +30,7 @@ export async function listAll<T = any>(
   filtersObj.page = 1;
   filtersObj.pageSize = 100;
 
-  const result1 = await listFn.apply(this, [...listArgs, filtersObj]);
+  const result1 = await listFn.apply(this, [...listArgs, JSON.parse(JSON.stringify(filtersObj))]);
   const additionalPages = getAdditionalPages(result1.Meta!);
 
   const results = await batchOperations<number, ListPage<T>>(
@@ -38,7 +38,7 @@ export async function listAll<T = any>(
     async (page: number) => {
       return await listFn.apply(this, [
         ...listArgs,
-        { ...filtersObj, page: page },
+        { ...JSON.parse(JSON.stringify(filtersObj)), page: page },
       ]);
     }
   );

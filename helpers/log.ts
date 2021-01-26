@@ -6,7 +6,7 @@ import * as util from 'util';
  * @param fileName optional filename to write to, defaults to log.json
  */
 export async function log(data: object, fileName = 'log.json') {
-  const prettyPrinted = util.inspect(data, { depth: null }); // like json.stringify but handles circular references
+  const prettyPrinted = util.inspect(data, { depth: null, maxArrayLength: null }); // like json.stringify but handles circular references
   if (!fileName.includes('.json')) {
     fileName = `${fileName}.json`;
   }
