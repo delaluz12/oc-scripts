@@ -18,10 +18,13 @@ async function runMassOrderUpdate() {
 
     console.log('Retrieving orders...')
 
-    // A) PATCH ALL - MAIN RUN
-    const orders = await helpers.listAll<Order>(sdk.Orders.List, 'Incoming', { filters: { xp: { SubmittedOrderStatus: 'Completed' } } });
+    // OPTION A) PATCH ALL - MAIN RUN
+    const orders = await helpers.listAll<Order>(sdk.Orders.List, 'Incoming',
+    { 
+        filters: { IsSubmitted: 'true' }
+    });
 
-    // B) PATCH JUST ONE FOR TESTING PURPOSES (NOTE - THIS IS A REAL ORDER FOR PROD)
+    // OPTION B) PATCH JUST ONE FOR TESTING PURPOSES (NOTE - THIS IS A REAL ORDER FOR PROD)
     // const testOrder: Order = { ID: 'SEB000999' };
     // const orders = [testOrder]
 
@@ -39,6 +42,13 @@ async function runMassOrderUpdate() {
         try {
             await sdk.Orders.Patch('Incoming', order.ID!, patch);
             console.log(`Patched ${progress} out of ${total}`);
+
+            // For every 2000 orders processed, wait 12 minutes before processing the next batch.
+            // Feel free to modify either number value, but dead lettering is likely to occur if the load is much larger or significantly more frequent.
+            if (progress % 2000 == 0) {
+                await new Promise(resolve => setTimeout(resolve, 720000)); // 12 minute wait for service bus to handle all previous batch's web jobs
+            }
+
             progress++;
         } catch (e) {
             console.log('error')
