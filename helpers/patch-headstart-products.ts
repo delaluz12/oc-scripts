@@ -60,14 +60,26 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
         }
     }
 
+    function makeRandom(length) {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
+        }
+       return result;
+    }
+
     async function createSupplierUser(id: string): Promise<any> {
+        const password = makeRandom(11) + 123!
         var user: User = {
             ID: `scriptuser-${id}`,
             Username: `scriptuser${id}`,
             FirstName: 'Eric',
             LastName: 'King',
             Email: 'eking@four51.com',
-            Password: 'SEBSupplier123!',
+            Password: password,
             Active: true
         }
         var newUser = await adminSdk.SupplierUsers.Save(id, user.ID!, user);
@@ -78,7 +90,7 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
                 SecurityProfileID: 'MPProductAdmin'
             });
         } catch {}
-        newUser.Password = user.Password!;
+        newUser.Password = password;
         return newUser;
     }
 

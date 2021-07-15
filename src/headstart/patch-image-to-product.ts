@@ -8,7 +8,7 @@ import { makeApiCall } from '../../helpers';
 async function run() {
 
     //1. first get all products
-    const creds = config.seb.test.seller
+    const creds = config.seb.prod.seller
     const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
     const allProducts = await helpers.listAll(sdk.Products.List);
 
@@ -54,7 +54,6 @@ async function run() {
     console.log(patchObjects)
     await helpers.PatchHeadstartProducts(patchObjects);
     console.log("done!")
-    //await test()
 }
 
 run()
