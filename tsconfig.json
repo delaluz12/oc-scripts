@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
-    "types": ["node"]
+    "types": ["pwa-node"]
   },
   "include": ["**/*.ts", "blah.js"],
   "exclude": ["node_modules"]
