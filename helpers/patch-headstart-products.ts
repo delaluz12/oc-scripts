@@ -22,9 +22,12 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
     productsToPatch?: Product<any>[]
     ) {
 
-    const creds = config.seb.test.seller;
-    const adminSdk = await ocClient(creds.clientID, creds.clientSecret, 'Staging');
-    const supplierSdk = await ocClient(creds.clientID, creds.clientSecret, 'Staging');
+    const creds = config.seb.prod.seller;
+    const adminSdk = await ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const supplierSdk = await ocClient(creds.clientID, creds.clientSecret, 'Production');
+
+    const password = makeRandom(10) + '123!'
+
 
     type TokenDictionary = Record<string, string>;
     const supplierTokens: TokenDictionary = {};
@@ -32,7 +35,7 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
     let products: Product<any>[] = []
     if(!productsToPatch) {
         console.log("getting products...")
-        products = await listAll<Product>(adminSdk.Products.List);
+        products = await listAll<Product>(adminSdk.Products.List)
         console.log("Got all products")
     } else {
         products = productsToPatch
@@ -48,7 +51,13 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
         } else {
             try {
                 var newUser = await createSupplierUser(supplierID);
-                var token = await supplierSdk.Auth.Login(newUser.Username, newUser.Password!, creds.supplierClientID, ['ProductAdmin']);
+                try {
+                    var token = await supplierSdk.Auth.Login(newUser.Username, newUser.Password!, creds.supplierClientID, ['ProductAdmin']);
+                } catch(error) {
+                    console.log(error)
+                    console.log(newUser)
+                    throw error
+                }
                 supplierTokens[supplierID] = token.access_token;
                 return token.access_token;
                 
@@ -62,17 +71,22 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
 
     function makeRandom(length) {
         var result = '';
+        var upperCaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var charactersLength = characters.length;
         for ( var i = 0; i < length; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * 
+            if(i===0) {
+                result +=upperCaseChars.charAt(Math.floor(Math.random() * 
+                charactersLength))
+            } else {
+                result += characters.charAt(Math.floor(Math.random() * 
             charactersLength));
+            }
         }
        return result;
     }
 
     async function createSupplierUser(id: string): Promise<any> {
-        const password = makeRandom(11) + 123!
         var user: User = {
             ID: `scriptuser-${id}`,
             Username: `scriptuser${id}`,
@@ -90,7 +104,7 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
                 SecurityProfileID: 'MPProductAdmin'
             });
         } catch {}
-        newUser.Password = password;
+        newUser.Password = user.Password!;
         return newUser;
     }
 
