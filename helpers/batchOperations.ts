@@ -23,6 +23,7 @@ export async function batchOperations<InputType = any, ReturnType = any>(
       try {
         return await operation.call(null, input);
       } catch (e) {
+        console.log("operatoin call failed",e);
         // swallow error so it doesn't stop execution
         // if you want to capture errors, do it on the
         // function that gets passed in as an operation
@@ -30,6 +31,7 @@ export async function batchOperations<InputType = any, ReturnType = any>(
     });
 
     // add batch results to all results
+  
     const batchResults = await Promise.all(requests);
     const batchResultsNoUndefined = batchResults.filter(
       x => x !== undefined // can be undefined on errors

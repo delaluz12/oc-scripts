@@ -3,8 +3,14 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "strict": true,
-    "target": "es2019",
-    "lib": ["es5", "dom", "dom.iterable", "es2019"],
+    "target": "es2020",
+    "lib": [
+      "es5",
+      "dom",
+      "dom.iterable",
+      "es2019",
+      "es2020"
+    ],
     "jsx": "react",
     "isolatedModules": false,
     "skipLibCheck": true,
