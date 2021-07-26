@@ -22,9 +22,9 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
     productsToPatch?: Product<any>[]
     ) {
 
-    const creds = config.seb.prod.seller;
-    const adminSdk = await ocClient(creds.clientID, creds.clientSecret, 'Production');
-    const supplierSdk = await ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const creds = config.seb.test.seller;
+    const adminSdk = await ocClient(creds.clientID, creds.clientSecret, 'Staging');
+    const supplierSdk = await ocClient(creds.clientID, creds.clientSecret, 'Staging');
 
     const password = makeRandom(10) + '123!'
 

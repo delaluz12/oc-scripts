@@ -8,8 +8,8 @@ import { makeApiCall } from '../../helpers';
 async function run() {
 
     //1. first get all products
-    const creds = config.seb.prod.seller
-    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
+    const creds = config.seb.test.seller
+    const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Staging');
     const allProducts = await helpers.listAll(sdk.Products.List);
 
     const auth = await sdk.Auth.ClientCredentials(
@@ -19,6 +19,10 @@ async function run() {
     )
     
     async function getPatch(product: Product<any>): Promise<PatchData> {
+
+        if(product.ID === 'test123') {
+            console.log(product)
+        }
         const assets = await ContentManagementClient.Assets.ListAssets("Products", product.ID!, undefined, auth.access_token)
 
         //download and upload to new container
@@ -33,21 +37,32 @@ async function run() {
             }
             ))
         })
-        const imageUrls = await Promise.all(uploadQueue)
 
-        const imageArray = imageUrls.map(url => ({
-            Url: url.data
-        }))
+        const imageUrls = await Promise.all(uploadQueue)
+        const imageArray = imageUrls.map(url => {
+            console.log(url.data)
+            const parts = url.data.split("/")
+            const name = parts[parts.length-1]
+            return {
+                Url: url.data,
+                Tags: assets.Items.find(asset => asset.Url.includes(name))?.Tags
+            }
+        })
         const patchObj = {
             xp: {
                 Images: imageArray
             }
+        }
+        if(product.ID === 'test123') {
+            console.log(patchObj)
+            console.log("")
         }
         return {
             productID: product.ID!,
             patch: patchObj
         }
     }
+    
     console.log("Getting Patch Objects...")
     const patchObjects = await helpers.batchOperations(allProducts, getPatch, 1)
     console.log("patchObjects: ")
