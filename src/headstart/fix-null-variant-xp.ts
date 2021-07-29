@@ -45,7 +45,6 @@ async function run() {
             }
         }
     })
-
     // log and finish
     await helpers.log(errors, 'fix-null-variants.json')
     await helpers.log(fixedProductIDs, 'fixed-products.json')
