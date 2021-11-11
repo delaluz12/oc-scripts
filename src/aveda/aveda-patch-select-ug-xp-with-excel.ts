@@ -1,9 +1,11 @@
-import config from '../../integration-users.config';
+
+import config from "../../integration-users.config";
 import * as helpers from '../../helpers';
 import { UserGroup } from 'ordercloud-javascript-sdk';
 
 /**
  *  Pull in ug from an excel file, and patch the xp property
+ * 'ClosedDoorDate'
  */
 
 (async function run() {
@@ -16,7 +18,7 @@ import { UserGroup } from 'ordercloud-javascript-sdk';
   const buyerID =
     creds.clientID === config.prod.aveda.clientID ?  'aveda' : 'avedatest';
   // bring in UG ID from list specified.
-  const sheets = await helpers.xcelToJson('CanadaSalonsJuly2021.xlsx');
+  const sheets = await helpers.xcelToJson('Canada 8.3.21.xlsx');
   const rows = sheets[0]; // first sheet
   let userGroups = rows.map(row => {
     return { ID: `SoldTo-0000${row.SAP_ID}` };
