@@ -28,8 +28,8 @@ export async function batchOperations<InputType = any, ReturnType = any>(
         // function that gets passed in as an operation
       }
     });
-
     // add batch results to all results
+  
     const batchResults = await Promise.all(requests);
     const batchResultsNoUndefined = batchResults.filter(
       x => x !== undefined // can be undefined on errors

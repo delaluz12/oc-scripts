@@ -12,7 +12,7 @@ async function run() {
   const buyerID = (creds.clientID = config.test.aveda.clientID
     ? 'avedatest'
     : 'aveda');
-  const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret);
+  const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, "Sandbox");
 
   const salons = await helpers.listAll<UserGroup>(
     sdk.UserGroups.List,
