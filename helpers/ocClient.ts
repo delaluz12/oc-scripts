@@ -47,5 +47,4 @@ export async function ocClient(
     OrderCloudSDK.Tokens.SetAccessToken(token);
   }
   return OrderCloudSDK;
-
 }

@@ -12,15 +12,16 @@
   "license": "ISC",
   "dependencies": {
     "@azure/cosmos": "^3.5.3",
+    "@ordercloud/cms-sdk": "^1.0.1",
     "axios": "^0.21.1",
     "csvtojson": "^2.0.10",
     "lodash": "^4.17.19",
-    "ordercloud-javascript-sdk": "^4.0.0",
+    "ordercloud-javascript-sdk": "^4.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3",
-    "xlsx": "^0.15.6"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.123",

@@ -2,19 +2,17 @@ import config from '../../integration-users.config';
 import * as helpers from '../../helpers';
 
 //const toPatch = require('../inputData/dw-address-update.json');
-const toPatch = require('../inputData/dw-address-update.json');
 
-interface CountryPatchObj {
-  Country: string;
-}
 interface DWBuyerPatchRequest {
   buyer: string;
   address: string;
-  body: CountryPatchObj;
+  country: string;
 }
 async function run() {
+  var toPatch = await helpers.csvToJson('AddressCountrytoFix20200928.csv');
   const creds = config.dw.prod.seller;
-  const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret);
+
+  const sdk = await helpers.ocClient(creds.clientID, creds.clientSecret, 'Production');
 
   const total = toPatch.length;
   let progress = 0;
@@ -25,7 +23,7 @@ async function run() {
   ) {
     try {
       progress++;
-      await sdk.Addresses.Patch(request.buyer, request.address, request.body);
+      await sdk.Addresses.Patch(request.buyer, request.address, { Country: request.country });
       console.log(`${progress} of ${total} patch address requests complete`);
     } catch (e) {
       errors[`${request.buyer}_${request.address}`] = e;
