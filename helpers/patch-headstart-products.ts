@@ -17,12 +17,17 @@ export interface PatchData {
     patch: Partial<Product>
 }
 
+const supplierClientID = ''; // used for authenticating as supplier;
+
 export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
     partialProducts: PatchData[],
     productsToPatch?: Product<any>[]
     ) {
 
-    const creds = config.seb.test.seller;
+    const creds = config?.seb?.test;
+    if(!creds) {
+        throw "credentials not set";
+    }
     const adminSdk = await ocClient(creds.clientID, creds.clientSecret, 'Staging');
     const supplierSdk = await ocClient(creds.clientID, creds.clientSecret, 'Staging');
 
@@ -52,7 +57,7 @@ export async function PatchHeadstartProducts<InputType = any, ReturnType = any>(
             try {
                 var newUser = await createSupplierUser(supplierID);
                 try {
-                    var token = await supplierSdk.Auth.Login(newUser.Username, newUser.Password!, creds.supplierClientID, ['ProductAdmin']);
+                    var token = await supplierSdk.Auth.Login(newUser.Username, newUser.Password!, supplierClientID, ['ProductAdmin']);
                 } catch(error) {
                     console.log(error)
                     console.log(newUser)
