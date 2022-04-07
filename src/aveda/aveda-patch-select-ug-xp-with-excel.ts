@@ -1,8 +1,8 @@
 
-import { Config, OcConfig } from "../../integration-users.config";
 import * as helpers from '../../helpers';
 import { UserGroup } from 'ordercloud-javascript-sdk';
 import { batchOperations, OcEnv } from "../../helpers";
+import { Config } from '../models/config';
 
 /**
  *  Pull in ug from an excel file, and patch the xp property
