@@ -1,4 +1,5 @@
 import * as OrderCloudSDK from 'ordercloud-javascript-sdk';
+import { ApiRole } from 'ordercloud-javascript-sdk';
 export enum OcEnv {
   Sandbox = 'Sandbox',
   Staging = 'Staging',
@@ -7,7 +8,8 @@ export enum OcEnv {
 export async function ocClient(
   clientID: string,
   clientSecret: string,
-  OcEnv: 'Sandbox' | 'Staging' | 'Production'
+  OcEnv: 'Sandbox' | 'Staging' | 'Production',
+  roles?: ApiRole[]
 ): Promise<typeof OrderCloudSDK> {
   let environment;
   switch (OcEnv) {
@@ -40,7 +42,7 @@ export async function ocClient(
   const response = await OrderCloudSDK.Auth.ClientCredentials(
     clientSecret,
     clientID,
-    ['FullAccess']
+    roles ? roles : ['FullAccess']
   );
   const token = response.access_token;
   if (typeof token !== 'undefined') {
